@@ -1,10 +1,3 @@
-# Build all tutorials
-
 TEMPLATE = subdirs
+SUBDIRS = xlsx
 
-SUBDIRS += \
-    tutorial1 \
-    tutorial2 \
-    tutorial3 \
-    tutorial4 \
-    index
