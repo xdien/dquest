@@ -1,135 +1,91 @@
-Documentation: http://qtxlsx.debao.me
+Extract from dquest, Support basic CRUD function for Mysql
 
-QtXlsx is a library that can read and write Excel files. It doesn't require Microsoft Excel and can be used in any platform that Qt5 supported.
-The library can be used to
+DQuest is a C++ ORM (Object-relational mapping) for Qt framework. It aims to provide a rapid development environment for application with 
+database access. The database model declaration is very simple , just like other C++/Qt class (example). It is designed for mobile environment 
+but also useful for desktop and embedded application that do not demand for maximized performance for database.
 
-* Generate a new .xlsx file from scratch
-* Extract data from an existing .xlsx file
-* Edit an existing .xlsx file
- 
-## Getting Started
+It is getting more number of application use Sqlite for their data storage. However, writing data model in SQL is complicated . Usually it need 
+to write two set of interface : One for C/C++ and other for Sql. The work load is duplicated, and debug is troublesome.
 
-> * For linux user, if your Qt is installed through package manager tools such "apt-get", make sure that you have installed the Qt5 develop package *qtbase5-private-dev*
+With DQuest, you can declare a database model using C++ directly. Read / write access can be made through the C++ interface. You won't need to 
+write any SQL to gain the benefit of using Sqlite in your application.
 
-### Usage(1): Use Xlsx as Qt5's addon module
+To declare your database model, you need to:
 
-#### Building the module
+ * Create a class that inherits DQModel
+ * Added a DQ_MODEL macro to the class declaration
+ * Design your database field by using DQField  template type
+ * Register your model with DQ_DECLARE_MODEL macro function.
 
-> **Note**: Perl is needed in this step.
+Example:
 
-* Download the source code.
+```c++
+#include <dquest.h>
 
-* Put the source code in any directory you like
+/// User account database
+class User : public DQModel {
+    DQ_MODEL
+public:
+    DQField<QString> userId;
+    DQField<QDateTime> creationDate;
+    DQField<qreal> karma;
+};
 
-* Go to top directory of the project in a terminal and run
+/// Declare the model and the field clause
+DQ_DECLARE_MODEL(User,
+                 "user", // the table name.
+                 DQ_FIELD(userId , DQNotNull | DQUnique), 
+                 DQ_FIELD(creationDate , DQDefault("CURRENT_TIMESTAMP") ), 
+                 DQ_FIELD(karma) 
+                 );
+The declaration is equivalent to make this SQL table for SQLITE
 
-```
-    qmake
-    make
-    make install
-```
-
-The library, the header files, and others will be installed to your system.
-
-> ```make html_docs``` can be used to generate documentations of the library, and ```make check``` can be used to run unit tests of the library.
-
-#### Using the module
-
-* Add following line to your qmake's project file:
-
-```
-    QT += xlsx
-```
-
-* Then, using Qt Xlsx in your code
-
-```cpp
-    #include <QtXlsx>
-    int main()
-    {
-        QXlsx::Document xlsx;
-        xlsx.write("A1", "Hello Qt!");
-        xlsx.saveAs("Test.xlsx");
-        return 0;
-    }
+CREATE TABLE user  (
+       id INTEGER PRIMARY KEY AUTOINCREMENT,
+       userId TEXT NOT NULL UNIQUE,
+       creationDate DATETIME DEFAULT CURRENT_TIMESTAMP ,
+       karma DOUBLE
+);
 ```
 
-### Usage(2): Use source code directly
+Remarks: QObject is rarely used in DQuest , and DQModel is not QObject-based.
 
-The package contains a **qtxlsx.pri** file that allows you to integrate the component into applications that use qmake for the build step.
+See Tutorials
 
-* Download the source code.
+Features
+--------
 
-* Put the source code in any directory you like. For example, 3rdparty:
+* Object relation mapping for database table
+* Database model declaration and registration is simple.
+	* Declare model in C++/Qt way (p.s QObject is not used)
+	* Support model inheritance
+	* Foreign key - auto load entry
+* Supported operations : create table , drop table , select , delete , insert , query the existence of table , create index , drop index...
+* Support Sqlite - usable on mobile platform
+* Prevent SQL injection
+* Open source (New BSD license)
 
-```
-    |-- project.pro
-    |-- ....
-    |-- 3rdparty\
-    |     |-- qtxlsx\
-    |     |
-```
+Pending features
+----------------
 
-* Add following line to your qmake project file:
+* Multiple database access
+	* The software design support to access multiple database , but it is not tested.
+* Multi-threading
+	* DQuest use QSqlDatabase for database access. For multi-thread access, you need a database instance per thread. DQuest use the same 
+method , such that you also need a DQConnection per thread. A new database engine is under development for multi-thread application.
 
-```
-    include(3rdparty/qtxlsx/src/xlsx/qtxlsx.pri)
-```
+Limitations
+-----------
 
-> **Note**: If you like, you can copy all files from *src/xlsx* to your application's source path. Then add following line to your project file:
+* Not all SQL statement and options are implemented , most of them can be added upon on user request. Please join the mailing list.
+* Not implemented operations : create trigger
+* Not supported operations : join select
 
-> ```
-    include(qtxlsx.pri)
-```
+Licensing
+---------
 
-> **Note**: If you do not use qmake, you need to define the following macro manually
+DQuest ( "DQuest is not Dragon Quest" || "DQuest is Database Quest" || "Database Quest")
 
-> ```
-    XLSX_NO_LIB
-```
-
-
-* Then, using Qt Xlsx in your code
-
-```cpp
-    #include "xlsxdocument.h"
-    int main()
-    {
-        QXlsx::Document xlsx;
-        xlsx.write("A1", "Hello Qt!");
-        xlsx.saveAs("Test.xlsx");
-        return 0;
-    }
-```
-
-## References
-
-* http://www.ecma-international.org/publications/standards/Ecma-376.htm
-* http://www.iso.org/iso/catalogue_detail?csnumber=51463
-* http://msdn.microsoft.com/en-us/library/ee908652%28v=office.12%29.aspx
-* http://www.datypic.com/sc/ooxml/
-
-### General
-
-* https://github.com/jmcnamara/XlsxWriter
-* http://openpyxl.readthedocs.org
-* http://officeopenxml.com/anatomyofOOXML-xlsx.php
-* http://www.libxl.com
-* http://closedxml.codeplex.com/
-* http://epplus.codeplex.com/
-* http://excelpackage.codeplex.com/
-* http://spreadsheetlight.com/
-
-### Number formats
-
-* http://msdn.microsoft.com/en-us/library/ff529356%28v=office.12%29.aspx
-* http://www.ozgrid.com/Excel/excel-custom-number-formats.htm
-* http://stackoverflow.com/questions/894805/excel-number-format-what-is-409
-* http://office.microsoft.com/en-001/excel-help/create-a-custom-number-format-HP010342372.aspx
-
-### Formula
-
-* http://msdn.microsoft.com/en-us/library/ff533995%28v=office.12%29.aspx
-* http://msdn.microsoft.com/en-us/library/dd906358%28v=office.12%29.aspx
-* http://homepages.ecs.vuw.ac.nz/~elvis/db/Excel.shtml
-* http://ewbi.blogs.com/develops/2004/12/excel_formula_p.html
+The source code is licensed under BSD license. You may use it for open source and closed source application , you just need to obey the 
+requirement of BSD (e.g distribute the license agreement). Moreover, if you can inform us that your application is using DQuest. It can 
+encourage developer to further develop the software.
