@@ -25,7 +25,7 @@ class DQWhere;
   @remarks It is a implicitly shared class
  */
 
-class DQSharedQuery
+class Q_DECL_EXPORT DQSharedQuery
 {
 public:
 

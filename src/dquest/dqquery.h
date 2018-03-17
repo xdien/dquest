@@ -9,7 +9,7 @@
   @remarks It is a implicitly shared class
  */
 template <typename T>
-class DQQuery : public DQSharedQuery{
+class Q_DECL_EXPORT DQQuery : public DQSharedQuery{
 public:
 
     /// Construct q DQQuery and use default connection

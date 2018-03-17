@@ -14,7 +14,7 @@
  */
 
 template <class T>
-class DQList : public DQSharedList
+class Q_DECL_EXPORT DQList : public DQSharedList
 {
 public:
 

@@ -66,7 +66,7 @@ int main(int argc, char *argv[])
 
  */
 
-class DQConnection
+class Q_DECL_EXPORT DQConnection
 {
 public:
     /// Constructs a new DQConnetion object

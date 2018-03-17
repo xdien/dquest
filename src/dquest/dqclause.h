@@ -67,7 +67,7 @@ The declaration is equivalent to make this SQL table for SQLITE
 
   */
 
-class DQClause
+class Q_DECL_EXPORT DQClause
 {
 public:
     /// Supported type of clause

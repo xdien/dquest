@@ -11,7 +11,7 @@ class DQExpressionPriv;
 /**
    @remarks It is a private class for implementation use. User should not use this class.
  */
-class DQExpression
+class Q_DECL_EXPORT DQExpression
 {
 public:
     DQExpression();

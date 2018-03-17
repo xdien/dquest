@@ -15,7 +15,7 @@ DQModelMetaInfo* dqMetaInfo();
 
 /// The field of meta info
 
-class DQModelMetaInfoField {
+class Q_DECL_EXPORT DQModelMetaInfoField {
 public:
     inline DQModelMetaInfoField(){
         type = QVariant::Invalid;
@@ -74,7 +74,7 @@ DQSharedList _dqMetaInfoInitalData() {
   so that it will be destroyed automatically.
  */
 
-class DQModelMetaInfo : private QObject {
+class Q_DECL_EXPORT DQModelMetaInfo : private QObject {
 
 public:
 
@@ -172,17 +172,17 @@ private:
 /**
   @return The instance of the DQModelMetaInfo or NULL if it is not found.
  */
-DQModelMetaInfo* dqFindMetaInfo(QString name);
+Q_DECL_EXPORT DQModelMetaInfo* dqFindMetaInfo(QString name);
 
 /// Register a meta info
 /**
   @remarks User should not use this function for any purpose
  */
-void dqRegisterMetaInfo(QString name, DQModelMetaInfo *metaType);
+Q_DECL_EXPORT void dqRegisterMetaInfo(QString name, DQModelMetaInfo *metaType);
 
 /// Helper class for DQModelMetaInfo instance generation
 template <typename T>
-class DQModelMetaInfoHelper
+class Q_DECL_EXPORT DQModelMetaInfoHelper
 {
 public:
     enum {Defined = 0};

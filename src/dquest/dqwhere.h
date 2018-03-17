@@ -24,7 +24,7 @@
    Reference: http://www.sqlite.org/lang_expr.html
  */
 
-class DQWhere
+class Q_DECL_EXPORT DQWhere
 {
 public:
     /// Construct a null DQWhere object

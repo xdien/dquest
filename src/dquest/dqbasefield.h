@@ -9,7 +9,7 @@ class DQModel;
 
 /// The base class of DQField
 
-class DQBaseField
+class Q_DECL_EXPORT DQBaseField
 {
 public:
     DQBaseField();

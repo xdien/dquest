@@ -47,7 +47,7 @@
   @see DQList
  */
 
-class DQModel : public DQAbstractModel {
+class Q_DECL_EXPORT DQModel : public DQAbstractModel {
 
 public:
     QString lastError;
@@ -192,7 +192,7 @@ constexpr std::size_t offset_of()
                      decltype(get_member_type(m)), m>()
 
 template<>
-class DQModelMetaInfoHelper<DQModel>{
+class Q_DECL_EXPORT DQModelMetaInfoHelper<DQModel>{
 public:
     enum {Defined = 0 };
     /// Return the fields of DQModel

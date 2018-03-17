@@ -30,7 +30,7 @@ DEFINES += DQUEST_EXPORTS
 contains(CONFIG, staticlib){
     DEFINES += HAVE_STATIC_BUILD
     message(STATIC_BUILD)
-    DEFINES -= LIMEREPORT_EXPORTS
+    DEFINES -= DQUEST_EXPORTS
 }
 
 #Define this macro if you want to run tests, so more AIPs will get exported.

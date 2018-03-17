@@ -15,7 +15,7 @@
  */
 
 template <typename T>
-class DQField : public DQBaseField
+class Q_DECL_EXPORT DQField : public DQBaseField
 {
 public:
     /// Default constructor
@@ -105,7 +105,7 @@ public:
     }
 };
 */
-class DQPrimaryKey : public DQField<QString> {
+class Q_DECL_EXPORT DQPrimaryKey : public DQField<QString> {
 public:
     DQPrimaryKey(const QString primaryKeyName = PRIMARY_KEY_NAME);
     static DQClause clause();

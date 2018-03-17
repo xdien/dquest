@@ -6,7 +6,7 @@
 #include <dqmodelmetainfo.h>
 
 /// The based class of DQIndex
-class DQBaseIndex
+class Q_DECL_EXPORT DQBaseIndex
 {
 public:
     /// The default constructor.

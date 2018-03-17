@@ -79,7 +79,7 @@ To link with other record, it is just need to use the "=" operator
 
  */
 template <typename T>
-class DQForeignKey : public DQField<int> {
+class Q_DECL_EXPORT DQForeignKey : public DQField<int> {
 public:
     /// Construct a foreign key field
     DQForeignKey() : model(0){
