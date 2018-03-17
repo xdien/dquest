@@ -43,3 +43,7 @@ lib/*
 
 *.zip
 *.xlsx
+*.qmake.conf
+*.qmake.stash 
+mkspecs/*
+tests/*
