@@ -3,6 +3,7 @@
 
 #include <dqfield.h>
 #include <dqquery.h>
+//#include "utils/KhachHang.h"
 
 /// Foreign key field
 /** DQForeignKey is a special kind of DQField which can declare
@@ -83,6 +84,7 @@ public:
     /// Construct a foreign key field
     DQForeignKey() : model(0){
     }
+    T *model;
 
     /// Destruct the foreign key field
     ~DQForeignKey() {
@@ -108,6 +110,92 @@ public:
 
     /// Set the primary key of the "linked" model
     DQForeignKey& operator= (QVariant val) {
+        set(val);
+
+        return *this;
+    }
+
+    /// Access the data field of the "linked" model
+    T* operator->() {
+        if (!model)
+            model = new T();
+        if ( !get().isNull() &&  !isLoaded()  ) {
+            qDebug() << "kiem  tra load du lieu " << model->primaryKeyValue();
+            load();
+        }
+        return model;
+    }
+
+    /// Return an instance of the "linked" model
+    T& operator() () {
+        if (!model)
+            model = new T();
+        if ( !get().isNull() &&  !isLoaded() ) {
+            load();
+        }
+        return *model;
+    }
+
+    static DQClause clause() {
+        QVariant v = qVariantFromValue( (void*) dqMetaInfo<T>());
+        return DQClause(DQClause::FOREIGN_KEY , v );
+    }
+
+    /// TRUE if the model is already loaded.
+    inline bool isLoaded() {
+
+        bool res = false;
+        if (!model)
+            return res;
+        if ( !get().isNull() && !model->primaryKeyValue().isNull() && get() == model->primaryKeyValue() ) {
+            res = true;
+        }
+        return res;
+    }
+
+private:
+    bool load();
+
+    //KhachHang *model;
+
+
+};
+///string primarykey
+///
+///  //
+///
+///
+template <typename T>
+class DQForeignKeyStr : public DQField<QString> {
+public:
+    /// Construct a foreign key field
+    DQForeignKeyStr() : model(0){
+    }
+
+    /// Destruct the foreign key field
+    ~DQForeignKeyStr() {
+        if (model)
+            delete model;
+    }
+
+    /// Copy from other DQForeignKey object.
+    /** It will copy the contained model from other
+      DQForeignKey object. The original model
+      will destroyed.
+     */
+    DQForeignKeyStr& operator=(T& rhs) {
+        set(rhs.id());
+        if (model){
+            delete model;
+            model = 0;
+        }
+        model = new T(rhs);
+
+        return *this;
+    }
+
+    /// Set the primary key of the "linked" model
+    DQForeignKeyStr& operator= (QVariant val) {
         set(val);
 
         return *this;
@@ -156,11 +244,24 @@ private:
     T *model;
 
 };
+template<typename T>
+bool DQForeignKeyStr<T>::load() {
+    bool res = false;
+    DQQuery<T> query = DQQuery<T>().filter(DQWhere(model->id.primaryKeyName(),"=", get()  ) ).limit(1);
+    if ( query.exec() ){
+        if (query.next() ) {
+            query.recordTo(*model);
+            res = true;
+        }
+    }
+
+    return res;
+}
 
 template<typename T>
 bool DQForeignKey<T>::load() {
     bool res = false;
-    DQQuery<T> query = DQQuery<T>().filter(DQWhere("id","=", get()  ) ).limit(1);
+    DQQuery<T> query = DQQuery<T>().filter(DQWhere(model->id.primaryKeyName(),"=", get()  ) ).limit(1);
     if ( query.exec() ){
         if (query.next() ) {
             query.recordTo(*model);

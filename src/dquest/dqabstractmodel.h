@@ -27,7 +27,7 @@ public:
       The successive call will update the record instead of insert unless forceInsert is TRUE.
 
      */
-    virtual bool save(bool forceInsert = false , bool forceAllField = false) = 0;
+    virtual bool insert() = 0;
 
 };
 

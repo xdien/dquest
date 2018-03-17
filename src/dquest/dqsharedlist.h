@@ -78,7 +78,7 @@ public:
       @return TRUE if all of the item is successfully saved
      */
 
-    bool save(bool forceInsert = false,bool forceAllField = false);
+    bool insert();
 
     /// Get the binded model's meta info
     /** If this function non-null value , then this object is binded

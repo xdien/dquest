@@ -70,13 +70,13 @@ void DQSharedList::removeAt(int index){
     delete model;
 }
 
-bool DQSharedList::save(bool forceInsert,bool forceAllField) {
+bool DQSharedList::insert() {
     int n = size();
     bool res = true;
 
     for (int i = 0 ; i < n ;i++){
         DQAbstractModel* model = at(i);
-        if (!model->save(forceInsert,forceAllField)) {
+        if (!model->insert()) {
             res = false;
         }
     }

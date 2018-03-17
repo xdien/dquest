@@ -110,10 +110,24 @@ QVariant DQField<QStringList>::get(bool convert) const {
     return val;
 }
 
-
-DQPrimaryKey::DQPrimaryKey(){
+///
+/// \brief DQPrimaryKey::DQPrimaryKey
+/// \param primaryKeyName default name "id"
+///
+DQPrimaryKey::DQPrimaryKey(const QString primaryKeyName){
+    m_primaryKeyName = primaryKeyName;
 }
 
 DQClause DQPrimaryKey::clause(){
     return DQClause(DQClause::PRIMARY_KEY);
+}
+
+QString DQPrimaryKey::primaryKeyName() const
+{
+    return m_primaryKeyName;
+}
+
+void DQPrimaryKey::setPrimaryKeyName(const QString &primaryKeyName)
+{
+    m_primaryKeyName = primaryKeyName;
 }

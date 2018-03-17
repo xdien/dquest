@@ -14,7 +14,13 @@
 #include <dqwhere.h>
 #include <dqsharedlist.h>
 #include <dqquery.h>
+#include <QSqlError>
+#include <QMessageBox>
+#include <QDateTime>
+#include <QDate>
 #include <dqforeignkey.h>
+
+
 
 /// Database model class
 /** DQModel is the core of DQuest that provide an ORM interface to sql database table.
@@ -44,6 +50,7 @@
 class DQModel : public DQAbstractModel {
 
 public:
+    QString lastError;
     /// DQModel default constructor
     /** The default constructor will set the connection object to be the
       Default connection. So you should use this constructor for single
@@ -56,10 +63,11 @@ public:
     explicit DQModel(DQConnection connection);
 
     virtual ~DQModel();
+    virtual void setPrimaryKeyName(const QString keyName);
+
 
     /// The primary key. It is default field for every model
     DQPrimaryKey id;
-
     /// The table name
     virtual QString tableName() const ;
 
@@ -83,17 +91,40 @@ public:
       The successive call will update the record instead of insert unless forceInsert is TRUE.
 
      */
-    virtual bool save(bool forceInsert = false,bool forceAllField = false);
+    virtual bool insert();
+    virtual bool update(const QString primaryKeyValue);
+    virtual bool update(DQWhere clause );
+    ///
+    /// \brief clear all fill to null
+    /// \return
+    ///
+    virtual bool clear();
+    enum FlagsAction{
+        DELETE_EXEC,
+        UPDATE,
+        INSERT,
+        EDIT,//mask edit not any action
+        NO_ACTION
+    };
+    ///
+    /// \brief autoCRUD auto insert/update/remove with flags
+    /// \return
+    ///
+    virtual bool autoCRUD();
 
     /// Load the record that first match with filter
     bool load(DQWhere where);
-
+    ///load with default id value
+    ///
+    bool load();
     /// Remove the record from database
     /**
       @return TRUE if the record is successfully removed
      */
-    bool remove();
-
+    bool remove(const QVariant &primaryKeyValue);
+    bool remove(DQWhere where);
+    const QVariant primaryKeyValue();
+    void setPrimaryKeyValue(const QVariant &value);
     /// Model fields validation
     /**
         This method should be used to provide custom model validation, and to modify attributes on your model if desired.
@@ -132,11 +163,33 @@ public:
      */
     static DQSharedQuery objects(DQConnection connection);
 
+    FlagsAction action() const;
+    void setAction(const FlagsAction &action);
+
+    DQWhere where() const;
+    void setWhere(const DQWhere &where);
+
 protected:
 
 private:
     DQConnection m_connection;
+    FlagsAction m_action;
+    DQWhere m_where;//using for updete and delete
 };
+template <typename T, typename M> M get_member_type(M T::*);
+template <typename T, typename M> T get_class_type(M T::*);
+
+template <typename T,
+          typename R,
+          R T::*M
+         >
+constexpr std::size_t offset_of()
+{
+    return reinterpret_cast<std::size_t>(&(((T*)0)->*M));
+}
+
+#define OFFSET_OF(m) offset_of<decltype(get_class_type(m)), \
+                     decltype(get_member_type(m)), m>()
 
 template<>
 class DQModelMetaInfoHelper<DQModel>{
@@ -146,8 +199,8 @@ public:
     static inline QList<DQModelMetaInfoField> fields() {
         QList<DQModelMetaInfoField> result;
         DQModel m;
-        result << DQModelMetaInfoField("id",
-                                       offsetof(DQModel,id),
+        result << DQModelMetaInfoField(m.id.primaryKeyName(),
+                                       OFFSET_OF(&DQModel::id),
                                        m.id.type(),
                                        m.id.clause()
                                        );
@@ -167,7 +220,7 @@ public:
   @see DQDefault
  */
 #define DQ_FIELD(field , CLAUSE...) \
-new DQModelMetaInfoField(#field,offsetof(Table,field),m.field.type(), m.field.clause(), ## CLAUSE)
+new DQModelMetaInfoField(#field,OFFSET_OF(&Table::field),m.field.type(), m.field.clause(), ## CLAUSE)
 
 /**
   See tests/modes/model1.h
@@ -248,7 +301,7 @@ DQ_DECLARE_MODEL(User,
 #define DQ_DECLARE_MODEL(MODEL,NAME,FIELDS...) \
         DQ_DECLARE_MODEL_BEGIN(MODEL,NAME) \
             result << DQModelMetaInfoHelper<DQModel>::fields(); \
-            DQModelMetaInfoField* list[] = { FIELDS,0 }; \
+            DQModelMetaInfoField* list[] = { FIELDS,0}; \
             result << _dqMetaInfoCreateFields(list) ; \
         DQ_DECLARE_MODEL_END(MODEL,NAME)
 

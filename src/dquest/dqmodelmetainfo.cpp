@@ -139,6 +139,21 @@ DQAbstractModel* DQModelMetaInfo::create(){
     return createFunc();
 }
 
+bool DQModelMetaInfo::setPrimaryKeyValue(const DQAbstractModel *model,const QString &primaryKeyName, const QVariant &primaryKeyValue)
+{
+    if(primaryKeyName.isEmpty()){
+        qDebug() << "PrimaryKeyName is null, please set name.";
+        return false;
+    }
+    if (!m_fields.contains(primaryKeyName))
+        return false;
+    int offset = m_fields[primaryKeyName].offset;
+
+    DQBaseField* f = DQ_MODEL_GET_FIELD(model,offset);
+    f->set(primaryKeyValue);
+    return true;
+}
+
 DQSharedList DQModelMetaInfo::initialData(){
     return initialDataFunc();
 }

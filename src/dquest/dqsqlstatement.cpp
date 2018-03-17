@@ -7,6 +7,11 @@ DQSqlStatement::DQSqlStatement()
 {
 }
 
+DQSqlStatement::~DQSqlStatement()
+{
+
+}
+
 QString DQSqlStatement::dropTable(DQModelMetaInfo *info) {
     QString sql = QString("drop table %1;").arg(info->name());
     return sql;
@@ -38,8 +43,8 @@ QString DQSqlStatement::insertInto(DQModelMetaInfo *info,QStringList fields){
     return _insertInto(info,"INSERT",fields);
 }
 
-QString DQSqlStatement::replaceInto(DQModelMetaInfo *info,QStringList fields){
-    return _insertInto(info,"REPLACE",fields);
+QString DQSqlStatement::replaceInto(DQModelMetaInfo *info,QStringList fields,const QString &clause){//update
+    return _update(info,fields,clause);
 }
 
 QString DQSqlStatement::_insertInto(DQModelMetaInfo *info ,QString type, QStringList fields){
@@ -54,6 +59,21 @@ QString DQSqlStatement::_insertInto(DQModelMetaInfo *info ,QString type, QString
 
     sql = format.arg(info->name(), fields.join(","),values.join(",") , type);
 
+    return sql;
+}
+
+QString DQSqlStatement::_update(DQModelMetaInfo *info ,QStringList fields,QString clause)
+{
+    QString sql,format;
+    QStringList values;
+
+    format = QString("UPDATE %1 SET %2 where %3;");
+
+    foreach (QString f, fields) {
+        values << f+ "=:" + f;
+    }
+
+    sql = format.arg(info->name(),values.join(","),clause);
     return sql;
 }
 

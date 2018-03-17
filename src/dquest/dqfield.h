@@ -1,8 +1,9 @@
 #ifndef DQFIELD_H
 #define DQFIELD_H
 
-#include <dqbasefield.h>
 
+#include <dqbasefield.h>
+#define PRIMARY_KEY_NAME "id"
 /// Database field
 /**
     DQField store the value of a field in database model. The format is QVariant.
@@ -93,7 +94,7 @@ QVariant DQField<QStringList>::get(bool convert) const;
 
 /// Primary key field
 
-class DQPrimaryKey : public DQField<int> {
+/*class DQPrimaryKey : public DQField<int> {
 public:
     DQPrimaryKey();
     static DQClause clause();
@@ -102,6 +103,23 @@ public:
         set(val);
         return val;
     }
+};
+*/
+class DQPrimaryKey : public DQField<QString> {
+public:
+    DQPrimaryKey(const QString primaryKeyName = PRIMARY_KEY_NAME);
+    static DQClause clause();
+
+    inline QVariant operator=(const QVariant &val){
+        set(val);
+        return val;
+    }
+
+     QString primaryKeyName() const;
+     void setPrimaryKeyName(const QString &primaryKeyName);
+
+private:
+    QString m_primaryKeyName;//use for name id;
 };
 
 #endif // DQFIELD_H

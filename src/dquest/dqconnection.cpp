@@ -16,7 +16,7 @@ class DQConnectionPriv : public QSharedData
         lastQuery = 0;
     }
 
-    ~DQConnectionPriv() {
+    virtual ~DQConnectionPriv() {
         if (lastQuery)
             delete lastQuery;
     }
@@ -28,8 +28,10 @@ class DQConnectionPriv : public QSharedData
 
     /// The last query being used.
     QSqlQuery *lastQuery;
-
+#ifdef Q_OS_ANDROID
+#else
     QMutex mutex;
+#endif
 };
 
 /// The default connection shared for all objects
@@ -63,7 +65,8 @@ bool DQConnection::operator!=(const DQConnection &rhs) {
 bool DQConnection::open(QSqlDatabase db){
     Q_ASSERT(db.isOpen());
 
-    if (db.driverName() != "QSQLITE") {
+    //if (db.driverName() != "QSQLITE") {
+    if (db.driverName() != "QMYSQL"){
         qWarning() << "Only QSQLITE dirver is supported.";
         return false;
     }
@@ -136,7 +139,7 @@ bool DQConnection::createTables(){
             DQSharedList initialData = info->initialData();
             int n = initialData.size();
             for (int i = 0 ; i< n;i++) {
-                initialData.at(i)->save();
+                initialData.at(i)->insert();
             }
         }
     }
@@ -179,11 +182,17 @@ QSqlQuery DQConnection::query(){
 }
 
 void DQConnection::setLastQuery(QSqlQuery query){
+#ifdef Q_OS_ANDROID
+#else
     d->mutex.lock();
+#endif
     if (d->lastQuery != 0)
         delete d->lastQuery;
     d->lastQuery = new QSqlQuery(query);
+#ifdef Q_OS_ANDROID
+#else
     d->mutex.unlock();
+#endif
 }
 
 QSqlQuery DQConnection::lastQuery(){
@@ -194,9 +203,15 @@ QSqlQuery DQConnection::lastQuery(){
      @todo Implement last query storage per thread.
      */
     QSqlQuery query;
+#ifdef Q_OS_ANDROID
+#else
     d->mutex.lock();
+#endif
     query = *d->lastQuery;
+#ifdef Q_OS_ANDROID
+#else
     d->mutex.unlock();
+#endif
 
     return query;
 }

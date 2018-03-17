@@ -214,10 +214,11 @@ bool DQSharedQuery::recordTo(DQAbstractModel *model) {
     for (int i = 0 ; i < count;i++){
         QString field = record.fieldName(i);
         res = data->metaInfo->setValue(model,field,record.value(i));
-        if (!res)
-            break;
+        if (!res){
+            //don't break to easy debug
+            QMessageBox::critical(0,"Column not found table " + data->metaInfo->name(),"Can't record to field " +field + " value: "+ record.value(i).toString());
+        }
     }
-
     return res;
 }
 

@@ -12,7 +12,22 @@ class DQModel;
 
 class DQSqlStatement;
 
-class DQSqlPriv;
+class DQSqlPriv: public QSharedData{
+public:
+    explicit DQSqlPriv();
+    QSharedPointer<DQSqlStatement> m_statement;
+
+    QSqlDatabase m_db;
+
+    /// The query object used in last operation
+    QSharedPointer<QSqlQuery> m_lastQuery;
+//bug on adnroid mutithead
+#ifdef Q_OS_ANDROID
+#else
+    QMutex m_mutex;
+#endif
+
+};
 
 /// A helper class for SQL statement exeuction
 /**
@@ -79,7 +94,7 @@ public:
       @param fields A list of fields that should be saved
       @param updateId TRUE if the ID of the model should be updated after operation
      */
-    bool replaceInto(DQModelMetaInfo* info,DQModel *model,QStringList fields,bool updateId);
+    bool replaceInto(DQModelMetaInfo* info, DQModel *model, QStringList fields, QString clause);
 
     /// Create a query object to the connected database
     QSqlQuery query();
@@ -112,7 +127,7 @@ private:
     bool insertInto(DQModelMetaInfo* info,DQModel *model,QStringList fields,bool with_id,bool replace);
 
     QExplicitlySharedDataPointer<DQSqlPriv> d;
-
+    //DQSqlPriv *d;
     friend class DQConnection;
     friend class DQConnectionPriv;
 };

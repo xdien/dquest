@@ -18,6 +18,8 @@ class DQSqlStatement
 public:
     /// Default constructor
     DQSqlStatement();
+    //waring
+    virtual ~DQSqlStatement();
 
     /// Get the supported driver name
     virtual QString driverName() = 0;
@@ -58,7 +60,7 @@ public:
     /**
       @param with_id TRUE if the "id" field should be included.
      */
-    virtual QString replaceInto(DQModelMetaInfo *info,QStringList fields);
+    virtual QString replaceInto(DQModelMetaInfo *info, QStringList fields, const QString &clause);
 
     /// Select statement
     virtual QString select(DQSharedQuery query);
@@ -73,8 +75,10 @@ protected:
     /// The real function for create table if not exists
     virtual QString _createTableIfNotExists(DQModelMetaInfo *info) = 0;
 
-    /// The real function for "insert into / replace into" statement
+    /// The real function for "insert into" statement
     virtual QString _insertInto(DQModelMetaInfo *info ,QString type, QStringList fields);
+    /// The real function for "update" statement
+    virtual QString _update(DQModelMetaInfo *info , QStringList fields, QString clause);
 
     virtual QString selectCore(DQQueryRules rules);
 

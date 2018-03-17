@@ -128,6 +128,8 @@ public:
 
     /// Create an instance of the associated model type
     DQAbstractModel* create();
+    ///Set value for primary key
+    bool setPrimaryKeyValue(const DQAbstractModel *model,const QString &primaryKeyName, const QVariant &primaryKeyValue);
 
 protected:
     /// Default constructor
