@@ -1,6 +1,6 @@
 TARGET = dquest
 
-load(qt_module)
+#load(qt_module)
 
 CONFIG += build_dquest_lib c++11
 include(dquestlib.pri)

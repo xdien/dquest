@@ -1,7 +1,7 @@
 INCLUDEPATH += $$PWD
 DEPENDPATH += $$PWD
 
-QT += core gui gui-private widgets sql
+QT += core gui widgets sql
 !build_dquest_lib:DEFINES += DQUEST_NO_LIB
 
 HEADERS += \
