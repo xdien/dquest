@@ -1,8 +1,9 @@
 TARGET = dquest
 
-#load(qt_module)
+load(qt_module)
 
 CONFIG += build_dquest_lib c++11
+CONFIG-=create_cmake
 include(dquestlib.pri)
 
 
