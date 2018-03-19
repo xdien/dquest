@@ -86,25 +86,6 @@ public:
 
 };
 
-template <>
-bool DQField<QStringList>::set(QVariant value);
-
-template <>
-QVariant DQField<QStringList>::get(bool convert) const;
-
-/// Primary key field
-
-/*class DQPrimaryKey : public DQField<int> {
-public:
-    DQPrimaryKey();
-    static DQClause clause();
-
-    inline QVariant operator=(const QVariant &val){
-        set(val);
-        return val;
-    }
-};
-*/
 class Q_DECL_EXPORT DQPrimaryKey : public DQField<QString> {
 public:
     DQPrimaryKey(const QString primaryKeyName = PRIMARY_KEY_NAME);
