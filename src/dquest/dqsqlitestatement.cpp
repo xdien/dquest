@@ -9,8 +9,8 @@ DQSqliteStatement::DQSqliteStatement()
 }
 
 QString DQSqliteStatement::_createTableIfNotExists(DQModelMetaInfo *info) {
-    QString statement = QString("%1 (\n%2\n);");
-    QString createTable = QString("CREATE TABLE IF NOT EXISTS %1 ");
+    QString statement = QStringLiteral("%1 (\n%2\n);");
+    QString createTable = QStringLiteral("CREATE TABLE IF NOT EXISTS %1 ");
 
     QStringList columnDefList;
 
@@ -21,12 +21,12 @@ QString DQSqliteStatement::_createTableIfNotExists(DQModelMetaInfo *info) {
         QString typeName = columnTypeName(f->type);
 
         if (typeName.isNull()) {
-            qWarning() << QString("%1::%3 - DQField<%2> is not supported yet")
+            qWarning() << QStringLiteral("%1::%3 - DQField<%2> is not supported yet")
                         .arg(info->name()).arg(QVariant::typeToName(f->type)).arg(f->name);
             continue;
         }
 
-        QString columnDef = QString("%1 %2 %3")
+        QString columnDef = QStringLiteral("%1 %2 %3")
                             .arg(f->name)
                             .arg(columnTypeName(f->type))
                             .arg(columnConstraint(f->clause) );
@@ -42,7 +42,7 @@ QString DQSqliteStatement::_createTableIfNotExists(DQModelMetaInfo *info) {
         DQModelMetaInfo * targetInfo = (DQModelMetaInfo*) v.value<void *>();
         Q_ASSERT(targetInfo);
 
-        QString columnDef = QString("FOREIGN KEY(%1) REFERENCES %2(id)")
+        QString columnDef = QStringLiteral("FOREIGN KEY(%1) REFERENCES %2(id)")
                             .arg(f.name)
                             .arg(targetInfo->name() );
 
@@ -52,7 +52,7 @@ QString DQSqliteStatement::_createTableIfNotExists(DQModelMetaInfo *info) {
     QString sql;
     sql = statement
           .arg(createTable.arg(info->name()))
-          .arg(columnDefList.join(",\n"));
+          .arg(columnDefList.join(QStringLiteral(",\n")));
 
     return sql;
 }
@@ -64,26 +64,27 @@ QString DQSqliteStatement::columnTypeName(QVariant::Type type) {
     case QVariant::UInt:
     case QVariant::LongLong:
     case QVariant::ULongLong:
-        res = "INTEGER";
+        res = QStringLiteral("INTEGER");
         break;
     case QVariant::Double:
-        res = "DOUBLE";
+        res = QStringLiteral("DOUBLE");
         break;
     case QVariant::String:
     case QVariant::StringList:
-        res = "TEXT";
+        res = QStringLiteral("TEXT");
         break;
     case QVariant::DateTime:
-        res = "DATETIME";
+        res = QStringLiteral("DATETIME");
         break;
     case QVariant::Date:
-        res = "DATE";
+        res = QStringLiteral("DATE");
         break;
     case QVariant::ByteArray:
-        res = "BLOB";
+        res = QStringLiteral("BLOB");
         break;
     case QVariant::Bool:
-        res = "BOOLEAN";
+        res = QStringLiteral("BOOLEAN");
+        break;
     default:
         break;
     }
@@ -93,11 +94,11 @@ QString DQSqliteStatement::columnTypeName(QVariant::Type type) {
 QString DQSqliteStatement::columnConstraint(DQClause clause){
     QStringList res;
     if (clause.testFlag(DQClause::NOT_NULL)) {
-        res << "NOT NULL";
+        res << QStringLiteral("NOT NULL");
     }
 
     if (clause.testFlag(DQClause::UNIQUE)) {
-        res << "UNIQUE";
+        res << QStringLiteral("UNIQUE");
     }
 
     if (clause.testFlag(DQClause::DEFAULT)) {
@@ -105,21 +106,21 @@ QString DQSqliteStatement::columnConstraint(DQClause clause){
 //        QString fvalue = formatValue(value,true); // User should format the value by themself.
         QString fvalue = value.toString();
 
-        res << QString("DEFAULT %1 ")
+        res << QStringLiteral("DEFAULT %1 ")
                 .arg(fvalue);
     }
 
     if (clause.testFlag(DQClause::PRIMARY_KEY)) {
-        res << QString("PRIMARY KEY AUTOINCREMENT");
+        res << QStringLiteral("PRIMARY KEY AUTOINCREMENT");
     }
 
-    return res.join(" ");
+    return res.join(QStringLiteral(" "));
 }
 
 QString DQSqliteStatement::driverName(){
-    return "SQLITE";
+    return QStringLiteral("SQLITE");
 }
 
 QString DQSqliteStatement::exists(DQModelMetaInfo *info) {
-    return QString("SELECT name FROM sqlite_master WHERE type='table' and name ='%1'").arg(info->name());
+    return QStringLiteral("SELECT name FROM sqlite_master WHERE type='table' and name ='%1'").arg(info->name());
 }
