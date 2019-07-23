@@ -64,7 +64,7 @@ QString dqEscape(QString val,bool trimStrings) {
         res = val;
 
     res.replace(QLatin1Char('\''), QLatin1String("''"));
-    res = QString("'%1'").arg(res);
+    res = QStringLiteral("'%1'").arg(res);
 
     return res;
 }

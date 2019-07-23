@@ -91,7 +91,7 @@ QString DQExpressionPriv::_process(DQWhere& where) {
     leftString = _process(where.left());
     rightString = _process(where.right());
 
-    return QString("%1 %2 %3").arg(leftString).arg(where.op()).arg(rightString);
+    return QStringLiteral("%1 %2 %3").arg(leftString).arg(where.op()).arg(rightString);
 
 }
 
@@ -103,7 +103,7 @@ QString DQExpressionPriv::_process(QVariant v) {
         if (w.isField()) {
             res = w.toString();
         } else {
-            res = QString("(%1)").arg(_process(w));
+            res = QStringLiteral("(%1)").arg(_process(w));
         }
     } else if (v.userType() == dataPrivTypeId) {
         DQWhereDataPriv data = v.value<DQWhereDataPriv>();
@@ -132,7 +132,7 @@ QString DQExpressionPriv::_process(DQWhereDataPriv& data){
         Q_ASSERT(list.size() == 2);
         arg1 = bind(list.at(0));
         arg2 = bind(list.at(1));
-        res = QString("%1 and %2").arg(arg1).arg(arg2);
+        res = QStringLiteral("%1 and %2").arg(arg1).arg(arg2);
         break;
 
     case DQWhereDataPriv::In:
@@ -140,7 +140,7 @@ QString DQExpressionPriv::_process(DQWhereDataPriv& data){
             arg = bind(v);
             args << arg;
         }
-        res = QString("(%1)").arg(args.join(","));
+        res = QStringLiteral("(%1)").arg(args.join(","));
         break;
 
     default:

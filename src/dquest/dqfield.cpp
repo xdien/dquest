@@ -29,8 +29,8 @@ static QString escape(QString value) {
 
 static QString unescape(QString value) {
     QMap<QString,char> map;
-    map["&amp;"] = '&';
-    map["&quot;"] = '"';
+    map[QStringLiteral("&amp;")] = '&';
+    map[QStringLiteral("&quot;")] = '"';
 
     QString result;
     result.reserve(value.size());
@@ -58,7 +58,7 @@ static QString unescape(QString value) {
             }
 
             if (!found) {
-                qWarning() << QString("Invalid escaped string : %1").arg(value);
+                qWarning() << QStringLiteral("Invalid escaped string : %1").arg(value);
             }
         }
 
@@ -75,7 +75,7 @@ bool DQField<QStringList>::set(QVariant value){
 
     if (value.type() == QVariant::String) {
         str = value.toString();
-        QStringList list = str.split(SEP);
+        QStringList list = str.split(QStringLiteral(SEP));
         QStringList result;
 
         foreach (str,list) {
@@ -102,7 +102,7 @@ QVariant DQField<QStringList>::get(bool convert) const {
             result << escape(str);
         }
 
-        str = result.join(SEP);
+        str = result.join(QStringLiteral(SEP));
         val = str;
     }
 //    qDebug() << __func__ << str << list;

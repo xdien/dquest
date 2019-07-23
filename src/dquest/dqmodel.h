@@ -219,9 +219,13 @@ public:
   @see DQUnique
   @see DQDefault
  */
+#ifdef _MSC_VER
+#define DQ_FIELD(field , CLAUSE,...) \
+new DQModelMetaInfoField(#field,OFFSET_OF(&Table::field),m.field.type(), m.field.clause(), ## CLAUSE)
+#else
 #define DQ_FIELD(field , CLAUSE...) \
 new DQModelMetaInfoField(#field,OFFSET_OF(&Table::field),m.field.type(), m.field.clause(), ## CLAUSE)
-
+#endif
 /**
   See tests/modes/model1.h
  */
@@ -298,21 +302,39 @@ DQ_DECLARE_MODEL(User,
 @see DQ_MODEL
 @see DQ_FIELD
  */
+#ifdef _MSC_VER
+#define DQ_DECLARE_MODEL(MODEL,NAME,FIELDS,...) \
+    DQ_DECLARE_MODEL_BEGIN(MODEL,NAME) \
+        result << DQModelMetaInfoHelper<DQModel>::fields(); \
+        DQModelMetaInfoField* list[] = { FIELDS,0}; \
+        result << _dqMetaInfoCreateFields(list) ; \
+    DQ_DECLARE_MODEL_END(MODEL,NAME)
+#else
 #define DQ_DECLARE_MODEL(MODEL,NAME,FIELDS...) \
-        DQ_DECLARE_MODEL_BEGIN(MODEL,NAME) \
-            result << DQModelMetaInfoHelper<DQModel>::fields(); \
-            DQModelMetaInfoField* list[] = { FIELDS,0}; \
-            result << _dqMetaInfoCreateFields(list) ; \
-        DQ_DECLARE_MODEL_END(MODEL,NAME)
+    DQ_DECLARE_MODEL_BEGIN(MODEL,NAME) \
+        result << DQModelMetaInfoHelper<DQModel>::fields(); \
+        DQModelMetaInfoField* list[] = { FIELDS,0}; \
+        result << _dqMetaInfoCreateFields(list) ; \
+    DQ_DECLARE_MODEL_END(MODEL,NAME)
+#endif
+
 
 /// Declare a model which is not a direct sub-class of DQModel
+#ifdef _MSC_VER
+#define DQ_DECLARE_MODEL2(MODEL,NAME,PARENT,FIELDS,...) \
+        DQ_DECLARE_MODEL_BEGIN(MODEL,NAME) \
+            result << DQModelMetaInfoHelper<PARENT>::fields(); \
+            DQModelMetaInfoField* list[] = { FIELDS,0 }; \
+            result << _dqMetaInfoCreateFields(list) ; \
+        DQ_DECLARE_MODEL_END(MODEL,NAME)
+#else
 #define DQ_DECLARE_MODEL2(MODEL,NAME,PARENT,FIELDS...) \
         DQ_DECLARE_MODEL_BEGIN(MODEL,NAME) \
             result << DQModelMetaInfoHelper<PARENT>::fields(); \
             DQModelMetaInfoField* list[] = { FIELDS,0 }; \
             result << _dqMetaInfoCreateFields(list) ; \
         DQ_DECLARE_MODEL_END(MODEL,NAME)
-
+#endif
 /// The DQ_MODEL macro must appear in the class definition that declares model's virtual function for database access
 /** \def DQ_MODEL
 
@@ -362,12 +384,12 @@ inline QDebug operator<< (QDebug d, const DQModel* model){
         QVariant value = metaInfo->value(model,field);
         if (value.isNull())
             continue;
-        col << QString("%1=%2").arg(field).arg(value.toString());
+        col << QStringLiteral("%1=%2").arg(field).arg(value.toString());
     }
 
-    QString res = QString("%1[%2]")
+    QString res = QStringLiteral("%1[%2]")
                   .arg(metaInfo->className())
-                  .arg(col.join(","));
+                  .arg(col.join(QStringLiteral(",")));
 
     d.nospace() << res;
 

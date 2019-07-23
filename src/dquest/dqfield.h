@@ -88,7 +88,7 @@ public:
 
 class Q_DECL_EXPORT DQPrimaryKey : public DQField<QString> {
 public:
-    DQPrimaryKey(const QString primaryKeyName = PRIMARY_KEY_NAME);
+    DQPrimaryKey(const QString primaryKeyName = QStringLiteral(PRIMARY_KEY_NAME));
     static DQClause clause();
 
     inline QVariant operator=(const QVariant &val){

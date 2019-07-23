@@ -168,6 +168,7 @@ bool DQModel::clear()
     foreach (const QString &key, list) {
         metaInfo()->setValue(this,key,QVariant());
     }
+    return true;//I dont
 }
 
 bool DQModel::autoCRUD()
@@ -245,7 +246,7 @@ bool DQModel::load()
     bool res = false;
 
     _DQMetaInfoQuery query( metaInfo() ,  m_connection);
-    DQWhere where(id.primaryKeyName(),"=",this->primaryKeyValue());
+    DQWhere where(id.primaryKeyName(),QStringLiteral("="),this->primaryKeyValue());
     query = query.filter(where).limit(1);
     res = query.exec();
     if (res){
@@ -270,7 +271,7 @@ bool DQModel::remove(const QVariant &primaryKeyValue)
 {
     _DQMetaInfoQuery query( metaInfo() ,  m_connection);
 
-    query = query.filter(DQWhere(id.primaryKeyName()," = " ,primaryKeyValue) );
+    query = query.filter(DQWhere(id.primaryKeyName(),QStringLiteral(" = "),primaryKeyValue) );
     bool res = query.remove();
     if (res){
         id->clear();
