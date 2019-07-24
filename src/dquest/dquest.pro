@@ -8,7 +8,7 @@ include(dquestlib.pri)
 
 DEFINES += DQUEST_EXPORTS
 win32-clang-msvc* :{
-    QMAKE_CXXFLAGS = +C99
+    QMAKE_CXXFLAGS = +C99`
 }
 
 #Define this macro if you want to run tests, so more AIPs will get exported.
