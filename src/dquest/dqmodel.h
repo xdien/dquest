@@ -220,7 +220,7 @@ public:
   @see DQDefault
  */
 #ifdef _MSC_VER
-#define DQ_FIELD(field , CLAUSE,...) \
+#define DQ_FIELD(field , CLAUSE...) \
 new DQModelMetaInfoField(#field,OFFSET_OF(&Table::field),m.field.type(), m.field.clause(), ## CLAUSE)
 #else
 #define DQ_FIELD(field , CLAUSE...) \
@@ -303,8 +303,7 @@ DQ_DECLARE_MODEL(User,
 @see DQ_FIELD
  */
 #ifdef _MSC_VER
-#define DQ_DECLARE_MODEL(MODEL,NAME,FIELDS,...) \
-    DQ_DECLARE_MODEL_BEGIN(MODEL,NAME) \
+#define DQ_DECLARE_MODEL(MODEL,NAME,FIELDS...) DQ_DECLARE_MODEL_BEGIN(MODEL,NAME) \
         result << DQModelMetaInfoHelper<DQModel>::fields(); \
         DQModelMetaInfoField* list[] = { FIELDS,0}; \
         result << _dqMetaInfoCreateFields(list) ; \
@@ -321,7 +320,7 @@ DQ_DECLARE_MODEL(User,
 
 /// Declare a model which is not a direct sub-class of DQModel
 #ifdef _MSC_VER
-#define DQ_DECLARE_MODEL2(MODEL,NAME,PARENT,FIELDS,...) \
+#define DQ_DECLARE_MODEL2(MODEL,NAME,PARENT,FIELDS...) \
         DQ_DECLARE_MODEL_BEGIN(MODEL,NAME) \
             result << DQModelMetaInfoHelper<PARENT>::fields(); \
             DQModelMetaInfoField* list[] = { FIELDS,0 }; \
