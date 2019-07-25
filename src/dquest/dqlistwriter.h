@@ -5,7 +5,6 @@
 #ifndef DQLISTWRITER_H
 #define DQLISTWRITER_H
 
-#include <dqlist.h>
 #include <dqstream.h>
 
 /// DQListWriter is a utility class to create the content on DQList object

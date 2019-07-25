@@ -43,7 +43,7 @@ public:
     T* at(int i) const {
         DQAbstractModel* m = DQSharedList::at(i);
         if (m->metaInfo() != dqMetaInfo<T>() ) {
-            qWarning() << QString("DQList::at() - Can not convert %1 to %2")
+            qWarning() << QStringLiteral("DQList::at() - Can not convert %1 to %2")
                           .arg(m->metaInfo()->className()).arg(dqMetaInfo<T>()->className());
             m = nullptr;
         }
@@ -106,19 +106,19 @@ inline QDebug operator<< (QDebug d, const DQList<T>& rhs ){
             QVariant value = metaInfo->value(model,field);
             if (value.isNull())
                 continue;
-            col << QString("%1=%2").arg(field).arg(value.toString());
+            col << QStringLiteral("%1=%2").arg(field).arg(value.toString());
         }
 
-        QString res = QString("(%2)")
-                      .arg(col.join(","));
+        QString res = QStringLiteral("(%2)")
+                      .arg(col.join(QStringLiteral(",")));
         record << res;
     }
 
     metaInfo = dqMetaInfo<T>();
 
-    d.nospace() << QString("%1[%2]")
+    d.nospace() << QStringLiteral("%1[%2]")
                     .arg(metaInfo->className())
-                    .arg(record.join(","));
+                    .arg(record.join(QStringLiteral(",")));
 
     return d.space();
 }

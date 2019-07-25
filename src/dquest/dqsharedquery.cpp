@@ -104,7 +104,7 @@ bool DQSharedQuery::exec() {
     data->connection.setLastQuery(data->query);
 
     if (!res) {
-        qWarning() << QString("Failed : %1").arg(data->query.executedQuery());
+        qWarning() << QStringLiteral("Failed : %1").arg(data->query.executedQuery());
     }
 
     return res;

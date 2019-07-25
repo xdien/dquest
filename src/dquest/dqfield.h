@@ -60,7 +60,7 @@ public:
 
     /// Compare with string type
     inline bool operator==(const char *string) const {
-        return get() == QString(string);
+        return get() == QString::fromUtf8(string);
     }
 
     /// Compare with string type

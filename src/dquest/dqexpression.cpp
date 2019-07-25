@@ -152,7 +152,7 @@ QString DQExpressionPriv::_process(DQWhereDataPriv& data){
 }
 
 QString DQExpressionPriv::bind(QVariant v){
-    QString arg = QString(":arg%1").arg(m_num++);
+    QString arg = QStringLiteral(":arg%1").arg(m_num++);
     m_values[arg] = v;
     return arg;
 }

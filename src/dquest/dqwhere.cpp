@@ -71,7 +71,7 @@ DQWhere::DQWhere(QString fieldAndOp , QVariant right)  : m_right(right){
     int pos = rx.indexIn(fieldAndOp);
 
     if (pos < 0){
-        qWarning() << QString("DQWhere() : can not parse %1").arg(fieldAndOp);
+        qWarning() << QStringLiteral("DQWhere() : can not parse %1").arg(fieldAndOp);
         return;
     }
     int len = rx.matchedLength();
@@ -130,7 +130,7 @@ QString DQWhere::toString() {
 
     op2 = variantToString(m_right,true);
 
-    return QString("%1 %2 %3").arg(op1).arg(m_op).arg(op2);
+    return QStringLiteral("%1 %2 %3").arg(op1).arg(m_op).arg(op2);
 }
 
 DQWhere DQWhere::expr(QString op,QVariant right){
@@ -302,11 +302,11 @@ QString variantToString(QVariant v,bool quoteString){
         v.userType() == typeId) {
 
         DQWhere w = v.value<DQWhere>();
-        QString pattern = "( %1 )";
+        QString pattern = QStringLiteral("( %1 )");
         if (w.isField()) {
             pattern = "%1";
         }
-        res = QString(pattern).arg(w.toString() );
+        res = pattern.arg(w.toString() );
     } else if (v.userType() == fieldTypeId) {
         DQWhereFieldPriv f;
         f = v.value<DQWhereFieldPriv>();

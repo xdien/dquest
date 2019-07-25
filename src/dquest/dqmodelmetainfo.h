@@ -187,7 +187,7 @@ class Q_DECL_EXPORT DQModelMetaInfoHelper
 public:
     enum {Defined = 0};
     static inline QString className() {
-        return QString();
+        return QStringLiteral("");
     }
 
     /// Get the list of available fields.
@@ -216,7 +216,7 @@ static inline QList<DQModelMetaInfoField> _dqMetaInfoCreateFields(DQModelMetaInf
 /// Find the meta info of DQModel class. If it is not existed, it will create a one automatically
 template <typename T>
 inline DQModelMetaInfo* dqMetaInfo() {
-    static DQModelMetaInfo* metaInfo = 0;
+    static DQModelMetaInfo* metaInfo = nullptr;
     if (metaInfo)
         return metaInfo;
 
@@ -224,12 +224,12 @@ inline DQModelMetaInfo* dqMetaInfo() {
 
     if (T::DQModelDefined == 0){
         qWarning() << "dqMetaInfo: You should declare database model class by DQ_MODEL / DQ_DECLARE_MODEL pair";
-        return 0;
+        return nullptr;
     }
 
-    metaInfo = (DQModelMetaInfo*) dqFindMetaInfo(name);
+    metaInfo = dynamic_cast<DQModelMetaInfo*>( dqFindMetaInfo(name));
     if (metaInfo) {
-        qWarning() << QString("Table with same name is detected! : %1 ").arg(name);
+        qWarning() << QStringLiteral("Table with same name is detected! : %1 ").arg(name);
     } else {
         metaInfo = new DQModelMetaInfo();
         metaInfo->setName(name);
@@ -249,7 +249,7 @@ inline DQModelMetaInfo* dqMetaInfo() {
 template <typename T>
 inline QString dqModelTableName(){
     if (DQModelMetaInfoHelper<T>::Defined == 0){
-        qWarning() << QString("DQ_DECLARE_MODEL is required!");
+        qWarning() << QStringLiteral("DQ_DECLARE_MODEL is required!");
     }
     return T::TableName();
 }
@@ -257,7 +257,7 @@ inline QString dqModelTableName(){
 template <typename T>
 inline QString _dqModelTableName(QString model){
     if (DQModelMetaInfoHelper<T>::Defined == 0){
-        qWarning() << QString("DQ_DECLARE_MODEL is required to declare database model : %1!").arg(model);
+        qWarning() << QStringLiteral("DQ_DECLARE_MODEL is required to declare database model : %1!").arg(model);
     }
     return T::TableName();
 }
