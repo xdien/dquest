@@ -45,7 +45,7 @@ public:
         if (m->metaInfo() != dqMetaInfo<T>() ) {
             qWarning() << QString("DQList::at() - Can not convert %1 to %2")
                           .arg(m->metaInfo()->className()).arg(dqMetaInfo<T>()->className());
-            m = 0;
+            m = nullptr;
         }
         return (T*) m;
     }
