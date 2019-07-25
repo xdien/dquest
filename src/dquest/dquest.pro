@@ -2,13 +2,13 @@ TARGET = dquest
 
 load(qt_module)
 
-CONFIG += build_dquest_lib c++11
+CONFIG += build_dquest_lib c++11 C99
 CONFIG-=create_cmake
 include(dquestlib.pri)
 
 DEFINES += DQUEST_EXPORTS
 win32-clang-msvc* :{
-    QMAKE_CXXFLAGS = +C99`
+#    QMAKE_CXXFLAGS = +C99
 }
 
 #Define this macro if you want to run tests, so more AIPs will get exported.

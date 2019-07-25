@@ -303,9 +303,10 @@ DQ_DECLARE_MODEL(User,
 @see DQ_FIELD
  */
 #ifdef _MSC_VER
-#define DQ_DECLARE_MODEL(MODEL,NAME,FIELDS...) DQ_DECLARE_MODEL_BEGIN(MODEL,NAME) \
+#define DQ_DECLARE_MODEL(MODEL,NAME,FIELDS,...) \
+    DQ_DECLARE_MODEL_BEGIN(MODEL,NAME) \
         result << DQModelMetaInfoHelper<DQModel>::fields(); \
-        DQModelMetaInfoField* list[] = { FIELDS,0}; \
+        DQModelMetaInfoField* list[] = {FIELDS, __VA_ARGS__,0}; \
         result << _dqMetaInfoCreateFields(list) ; \
     DQ_DECLARE_MODEL_END(MODEL,NAME)
 #else
@@ -317,23 +318,6 @@ DQ_DECLARE_MODEL(User,
     DQ_DECLARE_MODEL_END(MODEL,NAME)
 #endif
 
-
-/// Declare a model which is not a direct sub-class of DQModel
-#ifdef _MSC_VER
-#define DQ_DECLARE_MODEL2(MODEL,NAME,PARENT,FIELDS...) \
-        DQ_DECLARE_MODEL_BEGIN(MODEL,NAME) \
-            result << DQModelMetaInfoHelper<PARENT>::fields(); \
-            DQModelMetaInfoField* list[] = { FIELDS,0 }; \
-            result << _dqMetaInfoCreateFields(list) ; \
-        DQ_DECLARE_MODEL_END(MODEL,NAME)
-#else
-#define DQ_DECLARE_MODEL2(MODEL,NAME,PARENT,FIELDS...) \
-        DQ_DECLARE_MODEL_BEGIN(MODEL,NAME) \
-            result << DQModelMetaInfoHelper<PARENT>::fields(); \
-            DQModelMetaInfoField* list[] = { FIELDS,0 }; \
-            result << _dqMetaInfoCreateFields(list) ; \
-        DQ_DECLARE_MODEL_END(MODEL,NAME)
-#endif
 /// The DQ_MODEL macro must appear in the class definition that declares model's virtual function for database access
 /** \def DQ_MODEL
 
