@@ -66,10 +66,10 @@ bool DQConnection::open(QSqlDatabase db){
     Q_ASSERT(db.isOpen());
 
     //if (db.driverName() != "QSQLITE") {
-    if (db.driverName() != "QMYSQL"){
-        qWarning() << "Only QSQLITE dirver is supported.";
-        return false;
-    }
+//    if (db.driverName() != "QMYSQL"){
+//        qWarning() << "Only QSQLITE dirver is supported.";
+//        return false;
+//    }
 
     if (!m_defaultConnection.isOpen()
         && this != &m_defaultConnection
