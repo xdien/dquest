@@ -219,13 +219,10 @@ public:
   @see DQUnique
   @see DQDefault
  */
-#ifdef _MSC_VER
+
 #define DQ_FIELD(field ,...) \
 new DQModelMetaInfoField(#field,OFFSET_OF(&Table::field),m.field.type(), m.field.clause(), ## __VA_ARGS__)
-#else
-#define DQ_FIELD(field , CLAUSE...) \
-new DQModelMetaInfoField(#field,OFFSET_OF(&Table::field),m.field.type(), m.field.clause(), ## CLAUSE)
-#endif
+
 /**
   See tests/modes/model1.h
  */
@@ -302,21 +299,14 @@ DQ_DECLARE_MODEL(User,
 @see DQ_MODEL
 @see DQ_FIELD
  */
-#ifdef _MSC_VER
+
 #define DQ_DECLARE_MODEL(MODEL,NAME,...) \
     DQ_DECLARE_MODEL_BEGIN(MODEL,NAME) \
         result << DQModelMetaInfoHelper<DQModel>::fields(); \
         DQModelMetaInfoField* list[] = { __VA_ARGS__,nullptr}; \
         result << _dqMetaInfoCreateFields(list) ; \
     DQ_DECLARE_MODEL_END(MODEL,NAME)
-#else
-#define DQ_DECLARE_MODEL(MODEL,NAME,FIELDS...) \
-    DQ_DECLARE_MODEL_BEGIN(MODEL,NAME) \
-        result << DQModelMetaInfoHelper<DQModel>::fields(); \
-        DQModelMetaInfoField* list[] = { FIELDS,0}; \
-        result << _dqMetaInfoCreateFields(list) ; \
-    DQ_DECLARE_MODEL_END(MODEL,NAME)
-#endif
+
 
 /// The DQ_MODEL macro must appear in the class definition that declares model's virtual function for database access
 /** \def DQ_MODEL
