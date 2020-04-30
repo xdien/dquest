@@ -108,11 +108,12 @@ public:
       @remarks If both of the flag is set in two clause object. It will use the value specified in second clause
      */
     DQClause operator|(const DQClause& other);
+
     /// = operation overloading
     /**
       @remarks Hide DQClause & DQClause :: operator = (const DQClause &) warnings' is deprecated [-Wdeprecated-copy]
     */
-    DQClause operator=(const DQClause &other);
+//    DQClause operator=(const DQClause &other);
 
 private:
     void init();

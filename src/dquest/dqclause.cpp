@@ -55,10 +55,10 @@ DQClause DQClause::operator|(const DQClause& other) {
     return clause;
 }
 
-DQClause DQClause::operator=(const DQClause &other)
-{
-    m_flags = other.m_flags;
-}
+//DQClause DQClause::operator=(const DQClause &other)
+//{
+//    m_flags = other.m_flags;
+//}
 
 QString dqEscape(QString val,bool trimStrings) {
     QString res;
