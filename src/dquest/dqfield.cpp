@@ -9,8 +9,8 @@
 static QString escape(QString value) {
     QString result;
     QMap<char , QString> map;
-    map['&'] = "&amp;";
-    map['"'] = "&quot;";
+    map['&'] = QString::fromLatin1("&amp;");
+    map['"'] =  QString::fromLatin1("&quot;");
 
     result.reserve(value.size() * 1.1);
     int n = value.size();

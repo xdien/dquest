@@ -137,7 +137,7 @@ public:
     }
 
     static DQClause clause() {
-        QVariant v = qVariantFromValue( (void*) dqMetaInfo<T>());
+        QVariant v = QVariant::fromValue( (void*) dqMetaInfo<T>());
         return DQClause(DQClause::FOREIGN_KEY , v );
     }
 
@@ -222,7 +222,7 @@ public:
     }
 
     static DQClause clause() {
-        QVariant v = qVariantFromValue( (void*) dqMetaInfo<T>());
+        QVariant v = QVariant::fromValue( (void*) dqMetaInfo<T>());
         return DQClause(DQClause::FOREIGN_KEY , v );
     }
 

@@ -40,7 +40,7 @@ QString DQSqlStatement::dropIndexIfExists(QString name){
 }
 
 QString DQSqlStatement::insertInto(DQModelMetaInfo *info,QStringList fields){
-    return _insertInto(info,"INSERT",fields);
+    return _insertInto(info,QStringLiteral("INSERT"),fields);
 }
 
 QString DQSqlStatement::replaceInto(DQModelMetaInfo *info,QStringList fields,const QString &clause){//update
@@ -92,9 +92,9 @@ QString DQSqlStatement::select(DQSharedQuery query) {
         sql << orderBy(rules);
     }
 
-    sql << ";";
+    sql << QStringLiteral(";");
 
-    return sql.join(" ");
+    return sql.join(QStringLiteral(" "));
 }
 
 QString DQSqlStatement::deleteFrom(DQSharedQuery query) {
@@ -118,9 +118,9 @@ QString DQSqlStatement::deleteFrom(DQSharedQuery query) {
         sql << limitAndOffset(rules.limit());
     }
 
-    sql << ";";
+    sql << QStringLiteral(";");
 
-    return sql.join(" ");
+    return sql.join(QStringLiteral(" "));
 }
 
 QString DQSqlStatement::selectCore(DQQueryRules rules){
@@ -141,7 +141,7 @@ QString DQSqlStatement::selectResultColumn(DQQueryRules rules){
     QString res;
     QStringList fields = rules.fields();
     if (fields.size() == 0)
-        res = "*";
+        res = QStringLiteral("*");
     else
         res = fields.join(QStringLiteral(","));
 
@@ -165,10 +165,10 @@ QString DQSqlStatement::limitAndOffset(int limit, int offset) {
 QString DQSqlStatement::orderBy(DQQueryRules rules){
     QStringList orderingTerms;
 
-    orderingTerms << "ORDER BY";
-    orderingTerms << rules.orderBy().join(",");
+    orderingTerms << QStringLiteral("ORDER BY");
+    orderingTerms << rules.orderBy().join(QStringLiteral(","));
 
-    return orderingTerms.join(" ");
+    return orderingTerms.join(QStringLiteral(" "));
 }
 
 QString DQSqlStatement::formatValue(QVariant value,bool trimStrings) {

@@ -140,7 +140,7 @@ QString DQExpressionPriv::_process(DQWhereDataPriv& data){
             arg = bind(v);
             args << arg;
         }
-        res = QStringLiteral("(%1)").arg(args.join(","));
+        res = QStringLiteral("(%1)").arg(args.join(QStringLiteral(",")));
         break;
 
     default:

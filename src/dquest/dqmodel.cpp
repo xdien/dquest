@@ -30,11 +30,11 @@ void DQModel::setPrimaryKeyName(const QString keyName)
 }
 
 QString DQModel::tableName() const{
-    return TABLE_NAME;
+    return QStringLiteral(TABLE_NAME);
 }
 
 QString DQModel::TableName() {
-    return TABLE_NAME;
+    return QStringLiteral(TABLE_NAME);
 }
 
 void DQModel::setConnection(DQConnection connection){

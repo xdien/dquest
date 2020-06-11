@@ -65,7 +65,7 @@ public:
 
     /// Compare with string type
     inline bool operator!=(const char *string) const {
-        return get() != QString(string);
+        return get() != QString::fromLatin1(string);
     }
 
     /// Get the value of the field

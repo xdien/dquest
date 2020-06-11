@@ -85,10 +85,10 @@ public:
     }
 
     /// Cast it to DQSharedList
-    operator DQSharedList() {
-        DQSharedList res (*this);
-        return res;
-    }
+//    operator DQSharedList() {
+//        DQSharedList res (*this);
+//        return res;
+//    }
 
 };
 

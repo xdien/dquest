@@ -67,7 +67,7 @@ DQWhere::DQWhere(const DQWhere &other){
 }
 
 DQWhere::DQWhere(QString fieldAndOp , QVariant right)  : m_right(right){
-    QRegExp rx("^\\s*[a-zA-Z0-9]+");
+    QRegExp rx(QStringLiteral("^\\s*[a-zA-Z0-9]+"));
     int pos = rx.indexIn(fieldAndOp);
 
     if (pos < 0){
@@ -122,7 +122,7 @@ QString DQWhere::toString() {
     }
 
     if (m_left.isNull() || m_right.isNull())
-        return "";
+        return QStringLiteral("");
 
     QString op1,op2;
 
@@ -162,7 +162,7 @@ DQWhere DQWhere::operator&&(const DQWhere other) {
 
     w.m_left.setValue<DQWhere>(*this);
     w.m_right.setValue<DQWhere>( other);
-    w.m_op = "and";
+    w.m_op = QString::fromLatin1("and");
     w.m_isNull = false;
 
     return w;
@@ -186,62 +186,62 @@ DQWhere DQWhere::operator||(const DQWhere other) {
 
     w.m_left.setValue<DQWhere>(*this);
     w.m_right.setValue<DQWhere>( other);
-    w.m_op = "or";
+    w.m_op = QStringLiteral("or");
     w.m_isNull = false;
 
     return w;
 }
 
 DQWhere DQWhere::operator< (QVariant right){
-    return expr("<",right);
+    return expr( QStringLiteral("<"),right);
 }
 
 DQWhere DQWhere::operator<= (QVariant right){
-    return expr("<=",right);
+    return expr(QStringLiteral("<="),right);
 }
 
 DQWhere DQWhere::operator> (QVariant right){
-    return expr(">",right);
+    return expr(QStringLiteral(">"),right);
 }
 
 DQWhere DQWhere::operator>= (QVariant right){
-    return expr(">=",right);
+    return expr(QStringLiteral(">="),right);
 }
 
 DQWhere DQWhere::operator==(QVariant right){
-    return expr("=",right);
+    return expr(QStringLiteral("="),right);
 }
 
 DQWhere DQWhere::operator!=(QVariant right){
-    return expr("<>",right);
+    return expr(QStringLiteral("<>"),right);
 }
 
 DQWhere DQWhere::operator+(QVariant right){
-    return expr("*",right);
+    return expr(QStringLiteral("*"),right);
 }
 
 DQWhere DQWhere::operator-(QVariant right){
-    return expr("*",right);
+    return expr(QStringLiteral("*"),right);
 }
 
 DQWhere DQWhere::operator*(QVariant right){
-    return expr("*",right);
+    return expr(QStringLiteral("*"),right);
 }
 
 DQWhere DQWhere::operator/(QVariant right){
-    return expr("/",right);
+    return expr(QStringLiteral("/"),right);
 }
 
 DQWhere DQWhere::operator%(QVariant right){
-    return expr("%",right);
+    return expr(QStringLiteral("%"),right);
 }
 
 DQWhere DQWhere::equal(QVariant right){
-    return expr("=",right);
+    return expr(QStringLiteral("="),right);
 }
 
 DQWhere DQWhere::notEqual(QVariant right){
-    return expr("<>",right);
+    return expr(QStringLiteral("<>"),right);
 }
 
 DQWhere DQWhere::between(QVariant v1,QVariant v2){
@@ -250,7 +250,7 @@ DQWhere DQWhere::between(QVariant v1,QVariant v2){
     QVariant v;
     v.setValue<DQWhereDataPriv>(data);
 
-    return expr("between",v);
+    return expr(QStringLiteral("between"),v);
 }
 
 DQWhere DQWhere::in(QList<QVariant> list){
@@ -259,7 +259,7 @@ DQWhere DQWhere::in(QList<QVariant> list){
     QVariant v;
     v.setValue<DQWhereDataPriv>(data);
 
-    return expr("in",v);
+    return expr(QStringLiteral("in"),v);
 }
 
 DQWhere DQWhere::notIn (QList<QVariant> list) {
@@ -268,23 +268,23 @@ DQWhere DQWhere::notIn (QList<QVariant> list) {
     QVariant v;
     v.setValue<DQWhereDataPriv>(data);
 
-    return expr("not in",v);
+    return expr(QStringLiteral("not in"),v);
 }
 
 DQWhere DQWhere::like (QVariant other){
-    return expr("like",other);
+    return expr(QStringLiteral("like"),other);
 }
 
 DQWhere DQWhere::glob (QVariant other){
-    return expr("glob",other);
+    return expr(QStringLiteral("glob"),other);
 }
 
 DQWhere DQWhere::is (QVariant other){
-    return expr("is",other);
+    return expr(QStringLiteral("is"),other);
 }
 
 DQWhere DQWhere::isNot(QVariant other){
-    return expr("is not",other);
+    return expr(QStringLiteral("is not"),other);
 }
 
 DQWhere::operator QVariant() const{
@@ -304,7 +304,7 @@ QString variantToString(QVariant v,bool quoteString){
         DQWhere w = v.value<DQWhere>();
         QString pattern = QStringLiteral("( %1 )");
         if (w.isField()) {
-            pattern = "%1";
+            pattern = QStringLiteral("%1");
         }
         res = pattern.arg(w.toString() );
     } else if (v.userType() == fieldTypeId) {
@@ -313,7 +313,7 @@ QString variantToString(QVariant v,bool quoteString){
         res = f;
     } else if (v.type() == QVariant::String
                && quoteString) {
-        res = QString("\"%1\"").arg(v.toString());
+        res = QStringLiteral("\"%1\"").arg(v.toString());
     } else {
         res = v.toString();
     }
