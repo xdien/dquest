@@ -113,7 +113,7 @@ public:
     /**
       @remarks Hide DQClause & DQClause :: operator = (const DQClause &) warnings' is deprecated [-Wdeprecated-copy]
     */
-//    DQClause operator=(const DQClause &other);
+    // DQClause& operator=(const DQClause& other);
 
 private:
     void init();
