@@ -45,6 +45,9 @@ public:
     /// Free up any resources used.
     void clear();
 
+    /// Check if the field is set
+    virtual bool isSet() const;
+
 private:
     QVariant m_value;
 };

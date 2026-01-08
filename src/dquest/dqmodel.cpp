@@ -98,12 +98,12 @@ bool DQModel::update(const QString primaryKeyValue)
 
 
     foreach (QString field , fields) {
-        QVariant v = info->value(this,field);
+        //QVariant v = info->value(this,field);
         if ( field == id.primaryKeyName() ) // skip id field when forceInsert
             continue;
 
-        if (!v.isNull() ) {
-            //  qDebug() << field;
+        if (info->isSet(this,field)) {
+             //qDebug() << field;
             nonNullFields << field;
         }
     }
@@ -138,10 +138,10 @@ bool DQModel::update(DQWhere clause)
 
 
     foreach (QString field , fields) {
-        QVariant v = info->value(this,field);
+        //QVariant v = info->value(this,field);
         if ( field == id.primaryKeyName() ) // skip id field when forceInsert
             continue;
-        if (!v.isNull() ) {
+        if (info->isSet(this,field)) {
             //  qDebug() << field;
             nonNullFields << field;
         }

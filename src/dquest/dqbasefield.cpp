@@ -46,6 +46,10 @@ QVariant DQBaseField::operator() () const {
     m_value.clear();
  }
 
+ bool DQBaseField::isSet() const {
+     return !m_value.isNull();
+ }
+
  QDebug operator<<(QDebug dbg, const DQBaseField &field){
      dbg.nospace() << field.get();
 

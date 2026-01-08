@@ -47,3 +47,4 @@ lib/*
 *.qmake.stash 
 mkspecs/*
 tests/*
+include/dquest/*

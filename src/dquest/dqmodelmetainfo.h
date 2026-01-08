@@ -99,6 +99,9 @@ public:
     /// Set the value of a field at index
     bool setValue(DQAbstractModel *model,int index, const QVariant& val);
 
+    /// Check if the field is set
+    bool isSet(const DQAbstractModel *model,QString field) const;
+
     /// Get value of a field from a model
     /**
       @param model The reading model

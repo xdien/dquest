@@ -97,6 +97,15 @@ bool DQModelMetaInfo::setValue(DQAbstractModel *model,int index, const QVariant&
     return true;
 }
 
+bool DQModelMetaInfo::isSet(const DQAbstractModel *model,QString field) const{
+    if (!m_fields.contains(field))
+        return false;
+    int offset = m_fields[field].offset;
+
+    DQBaseField* f = DQ_MODEL_GET_FIELD(model,offset);
+    return f->isSet();
+}
+
 QVariant DQModelMetaInfo::value(const DQAbstractModel *model,QString field,bool convert) const{
     QVariant v;
     if (!m_fields.contains(field))

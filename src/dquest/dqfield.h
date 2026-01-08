@@ -3,6 +3,7 @@
 
 
 #include <dqbasefield.h>
+#include <QDate>
 #define PRIMARY_KEY_NAME "id"
 /// Database field
 /**
@@ -101,6 +102,49 @@ public:
 
 private:
     QString m_primaryKeyName;//use for name id;
+};
+
+template <>
+class Q_DECL_EXPORT DQField<QDate> : public DQBaseField
+{
+public:
+    DQField() : m_isSet(false) {}
+
+    static QVariant::Type type() { return QVariant::Date; }
+
+    inline QVariant operator=(const QVariant &val) {
+        set(val);
+        return val;
+    }
+
+    inline bool operator==(const DQField& rhs) const { return get() == rhs.get(); }
+    inline bool operator==(const QVariant &rhs) const { return get() == rhs; }
+    inline bool operator!=(const QVariant &rhs) const { return get() != rhs; }
+    inline bool operator==(const QDate& t) const { return get() == t; }
+    inline bool operator!=(const QDate& t) const { return get() != t; }
+    inline bool operator==(const char *string) const { return get() == QString::fromUtf8(string); }
+    inline bool operator!=(const char *string) const { return get() != QString::fromLatin1(string); }
+
+    inline QVariant get(bool convert = false) const {
+        return DQBaseField::get(convert);
+    }
+
+    inline bool set(QVariant value) {
+        m_isSet = true;
+        return DQBaseField::set(value);
+    }
+
+    inline operator QDate() const {
+        QVariant v = get();
+        return v.value<QDate>();
+    }
+
+    virtual bool isSet() const {
+        return m_isSet;
+    }
+
+private:
+    bool m_isSet;
 };
 
 #endif // DQFIELD_H
