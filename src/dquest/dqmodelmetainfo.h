@@ -18,12 +18,12 @@ DQModelMetaInfo* dqMetaInfo();
 class Q_DECL_EXPORT DQModelMetaInfoField {
 public:
     inline DQModelMetaInfoField(){
-        type = QVariant::Invalid;
+        type = QMetaType::UnknownType;
     }
 
     inline DQModelMetaInfoField(QString name,
                                 int offset,
-                                QVariant::Type type,
+                                QMetaType::Type type,
                                 DQClause defaultClause,
                                 DQClause c = DQClause()) :
         name(name),
@@ -38,7 +38,7 @@ public:
     /// Offset of the field
     int offset;
 
-    QVariant::Type type;
+    QMetaType::Type type;
 
     /// The clause of the field
     DQClause clause;

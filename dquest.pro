@@ -1,2 +1,2 @@
-CONFIG-=create_cmake
-load(qt_parts)
+TEMPLATE = subdirs
+SUBDIRS = src

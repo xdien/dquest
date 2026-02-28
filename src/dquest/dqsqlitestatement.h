@@ -10,25 +10,22 @@
     @remarks It is thread-safe
     @remarks All the derived class should not hold any member attribute.
  */
-class DQSqliteStatement : public DQSqlStatement
-{
+class DQSqliteStatement : public DQSqlStatement {
 public:
-    DQSqliteStatement();
+  DQSqliteStatement();
 
-    QString columnTypeName(QVariant::Type type);
-    QString columnConstraint(DQClause clause);
+  QString columnTypeName(QMetaType::Type type);
+  QString columnConstraint(DQClause clause);
 
-    virtual QString driverName();
+  virtual QString driverName();
 
-    /// Check is a table exist
-    static QString exists(DQModelMetaInfo *info);
+  /// Check is a table exist
+  static QString exists(DQModelMetaInfo *info);
 
 protected:
-
-    virtual QString _createTableIfNotExists(DQModelMetaInfo *info);
+  virtual QString _createTableIfNotExists(DQModelMetaInfo *info);
 
 private:
-
 };
 
 #endif // DQSQLITESTATEMENT_H

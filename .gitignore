@@ -48,3 +48,6 @@ lib/*
 mkspecs/*
 tests/*
 include/dquest/*
+src/dquest/object_script.dquest.Release
+src/dquest/object_script.dquest.Debug
+src/dquest/make_output.txt
