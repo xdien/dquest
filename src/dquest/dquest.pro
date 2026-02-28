@@ -9,7 +9,7 @@ DEFINES += DQUEST_EXPORTS
 # Basic install rules for Qt
 target.path = $$[QT_INSTALL_LIBS]
 headers.path = $$[QT_INSTALL_HEADERS]/dquest
-headers.files = $$HEADERS
+headers.files = $$HEADERS dquest
 
 modules.path = $$[QT_HOST_DATA]/mkspecs/modules
 modules.files = qt_lib_dquest.pri
