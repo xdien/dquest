@@ -1,9 +1,9 @@
 #ifndef DQFIELD_H
 #define DQFIELD_H
 
-
 #include <dqbasefield.h>
 #include <QDate>
+#include <QMetaType>
 #define PRIMARY_KEY_NAME "id"
 /// Database field
 /**
@@ -24,8 +24,8 @@ public:
     }
 
     /// Return the type id of the field
-    static QVariant::Type type(){
-        return (QVariant::Type) qMetaTypeId<T>();
+    static QMetaType::Type type(){
+        return (QMetaType::Type) qMetaTypeId<T>();
     }
 
     /// Copy the value from a QVariant object
@@ -110,7 +110,7 @@ class Q_DECL_EXPORT DQField<QDate> : public DQBaseField
 public:
     DQField() : m_isSet(false) {}
 
-    static QVariant::Type type() { return QVariant::Date; }
+    static QMetaType::Type type() { return QMetaType::QDate; }
 
     inline QVariant operator=(const QVariant &val) {
         set(val);
